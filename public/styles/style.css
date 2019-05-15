@@ -1,0 +1,473 @@
+body {
+  margin: 0;
+  font-family: sanfrancisco;
+  font-weight: 100;
+  color: #333;
+  letter-spacing: 2px;
+}
+
+#content {
+  margin-left: 9vh;
+  height: 100vh;
+  width: 100vw;
+}
+
+#survey {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  margin-left: 9vh;
+  height: 100vh;
+  width: 100vw;
+}
+
+h1 {
+  font-family: sanfrancisco;
+  font-weight: 400;
+  margin-left: 0;
+  margin-bottom: 0.5vh;
+}
+
+h2 {
+  float: left;
+  font-family: sanfrancisco;
+  font-weight: 300;
+  font-size: 2.7vh;
+  margin: 0.5vh;
+  letter-spacing: 0.2vh;
+}
+
+h3 {
+  font-family: sanfrancisco;
+  font-weight: 100;
+  margin: 0.5vh;
+}
+
+#results {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: 25% 15% 15% 15% 15%;
+  grid-gap: 1.5vh;
+  height: 80vh;
+  width: 80vh;
+  box-sizing: border-box;
+}
+
+.mediaTitle {
+  color: rgb(255, 255, 255, 0.85);
+  font-weight: 200;
+  position: absolute;
+  z-index: 2;
+  bottom: 1vh;
+  left: 1.5vh;
+  filter: drop-shadow( 0px 0px 1vh rgba(0, 0, 0, 0.9));
+}
+
+#exploreTitle {
+  font-weight: 300;
+  position: absolute;
+  z-index: 2;
+  top: 1vh;
+  left: 1.5vh;
+  filter: drop-shadow( 0px 0px 1vh rgba(0, 0, 0, 0.9));
+}
+
+.serviceLogo {
+  position: absolute;
+  z-index: 2;
+  top: 1.5vh;
+  left: 1.5vh;
+  height: 2vh;
+  filter: drop-shadow( 0px 0px 1vh rgba(0, 0, 0, 0.9));
+}
+
+.locationLogo {
+  opacity: 0.75;
+  position: absolute;
+  z-index: 2;
+  top: 1.5vh;
+  left: 1.5vh;
+  width: 4vh;
+  height: 4vh;
+  filter: drop-shadow( 0px 0px 1vh rgba(0, 0, 0, 0.9));
+}
+
+#results > div {
+  border-radius: 2px;
+  background-color: #333333;
+}
+
+#rec1 {
+  opacity: 0;
+  position: relative;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 5;
+  overflow: hidden;
+}
+
+#recGlobal {
+  opacity: 0;
+}
+
+#recLocal {
+  opacity: 0;
+}
+
+#animated4 {
+  opacity: 0;
+}
+
+#animated5 {
+  opacity: 0;
+}
+
+#animated6 {
+  opacity: 0;
+}
+
+#animated7 {
+  opacity: 0;
+}
+
+#animated8 {
+  opacity: 0;
+}
+
+.location {
+  position: relative;
+  overflow: hidden;
+}
+
+.poster {
+  z-index: 1;
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.hulu::after {
+  display: block;
+  position: relative;
+  background-image: linear-gradient(to bottom, rgba(61, 186, 61, 0) 0, rgb(61, 186, 61) 100%);
+  margin-top: -100%;
+  height: 100%;
+  width: 100%;
+  content: '';
+}
+
+.small::after {
+  display: block;
+  position: relative;
+  background-image: linear-gradient(to bottom, rgba(61, 186, 61, 0) 0, rgb(61, 186, 61) 100%);
+  margin-top: -15%;
+  height: 15%;
+  width: 100%;
+  content: '';
+}
+
+.netflix::after {
+  display: block;
+  position: relative;
+  background-image: linear-gradient(to bottom, rgba(177, 1, 6, 0) 0, rgb(177, 1, 6) 100%);
+  margin-top: -100%;
+  height: 100%;
+  width: 100%;
+  content: '';
+}
+
+.amazon::after {
+  display: block;
+  position: relative;
+  background-image: linear-gradient(to bottom, rgba(1, 170, 221, 0) 0, rgb(1, 170, 221) 100%);
+  margin-top: -100%;
+  height: 100%;
+  width: 100%;
+  content: '';
+}
+
+.alt1 {
+  position: relative;
+  grid-column-start: 3;
+  grid-column-end: 5;
+  overflow: hidden;
+}
+
+.alt1 > img {
+  width: 100%;
+  transform: translate(-50%, -50%);
+  position: relative;
+  left: 50%;
+}
+
+.alt2 {
+  color: rgb(255, 255, 255, 0.85);
+  position: relative;
+  grid-column-start: 1;
+  grid-column-end: 5;
+  overflow: hidden;
+}
+
+.alt2 > img {
+  width: 100%;
+  transform: translate(-50%, -50%);
+  position: relative;
+  left: 50%;
+}
+
+.alt3 {
+  background-image: linear-gradient(to right, #333 , rgb(92, 92, 92));
+  display: flex;
+  grid-column-start: 1;
+  grid-column-end: 5;
+  overflow: hidden;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+.bubbles {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-around;
+  height: 4vh;
+  width: 80vh;
+  position: absolute;
+  bottom: 2vh;
+
+}
+
+.netflixBubble {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 4vh;
+  padding: .5vh;
+  padding-left: 2vh;
+  padding-right: 2vh;
+  border-radius: 3vh;
+  font-weight: 200;
+  background-color: rgb(177, 1, 6, 0.5);
+}
+
+.huluBubble {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 4vh;
+  padding: .5vh;
+  padding-left: 2vh;
+  padding-right: 2vh;
+  border-radius: 3vh;
+  font-weight: 200;
+  background-color: rgb(61, 186, 61, 0.5);
+}
+
+.amazonBubble {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 4vh;
+  padding: .5vh;
+  padding-left: 2vh;
+  padding-right: 2vh;
+  border-radius: 3vh;
+  font-weight: 200;
+  background-color: rgb(1, 170, 221, 0.5);
+}
+
+.alt3 > div {
+  color: rgb(255, 255, 255, 0.75);
+  margin: 0;
+  flex-direction: column;
+}
+
+/* index.html */
+
+form {
+  font-family: sanfrancisco;
+  color: #333;
+}
+
+.question {
+  font-weight: 300;
+  margin: 24px 0 24px 0;
+  font-size: 13pt;
+}
+
+#column2 {
+  margin: 72px 0 0 0;
+}
+
+p {
+  margin: 0;
+  font-size: 2.5vh;
+  margin: 1vh;
+  margin-left: 5vh;
+}
+
+.textarea {
+  height: 30px;
+  border-radius: 10px;
+  border-style: none; 
+  padding-left: 2vh;
+  padding-right: 2vh;
+  background-color: rgb(230, 230, 230); 
+  overflow: auto; 
+  margin-bottom: 25px;
+  display: block;
+  width: 30vh;
+}
+
+.recomendation {
+  height: 30px;
+  border-radius: 10px;
+  border-style: none; 
+  padding-left: 2vh;
+  padding-right: 2vh;
+  background-color: rgb(230, 230, 230); 
+  overflow: auto; 
+  display: block;
+  margin-bottom: 5px;
+  width: 30vh;
+}
+
+.checkbox {
+  margin-bottom: 25px;
+}
+
+textarea:focus, input:focus{
+  outline: 0;
+
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.radio {
+  display: inline;
+}
+
+button {
+  height: 30px;
+  color: #fff;
+  font-size: 2vh;
+  border-radius: 10px;
+  border: 0;
+  background-color: #333;
+}
+
+@font-face {
+  font-family: sanfrancisco;
+  src: url(../fonts/SanFranciscoDisplay-Black.otf);
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: sanfrancisco;
+  src: url(../fonts/SanFranciscoDisplay-Heavy.otf);
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: sanfrancisco;
+  src: url(../fonts/SanFranciscoDisplay-Regular.otf);
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: sanfrancisco;
+  src: url(../fonts/SanFranciscoDisplay-Light.otf);
+  font-weight: 100;
+}
+
+.animated1 {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+.animated2 {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-delay: 0.5s;
+  animation-delay: 0.5s;
+}
+
+.animated3 {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-delay: 1s;
+  animation-delay: 1s;
+}
+
+.animated4 {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-delay: 1.5s;
+  animation-delay: 1.5s;
+}
+
+.animated5 {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-delay: 2s;
+  animation-delay: 2s;
+}
+
+.animated6 {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-delay: 2.5s;
+  animation-delay: 2.5s;
+}
+
+.animated7 {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-delay: 3s;
+  animation-delay: 3s;
+}
+
+.animated8 {
+  -webkit-animation-duration: 3s;
+  animation-duration: 3s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-delay: 5s;
+  animation-delay: 5s;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+  /* 0% {transform: translateX(100vh);}
+  100% {transform: translateX(0);} */
+}
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+  /* 0% {transform: translateX(100vh);}
+  100% {transform: translateX(0);} */
+}
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
