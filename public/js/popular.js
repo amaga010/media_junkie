@@ -25,6 +25,8 @@ function getPopularMedia() {
     for (i = 2; i < 5; i++) {
       $('#trending' + i).html(response.results[i].name);
     }
+    console.log(response.results[2]);
+    $('#trending').attr('src', 'https://image.tmdb.org/t/p/w370_and_h556_bestv2/' + response.results[2].backdrop_path)
   });
 };
 
