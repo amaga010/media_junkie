@@ -5,8 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
   <title>Media Junkie</title>
   <link rel="stylesheet" href="./public/styles/style.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 
 <body>
@@ -21,14 +24,14 @@
         <div class="mediaTitle">The Fifth Element</div>
       </div>
       <div class="location animated2 fadeIn" class="small" id="recGlobal">
-        <img class="poster" src="./public/img/poster2.jpg">
-        <div><img class="locationLogo" src="./public/img/global.svg"></div>
-        <div class="mediaTitle">John Wick</div>
+        <img id="popMovie" class="poster" src="./public/img/poster2.jpg">
+        <div><img class="locationLogo" src="./public/img/movie.svg"></div>
+        <div id="popMovieTitle" class="mediaTitle">John Wick</div>
       </div>
       <div class="location animated3 fadeIn" id="recLocal">
-        <img class="poster" src="./public/img/poster6.jpg">
-        <div><img class="locationLogo" src="./public/img/local.svg"></div>
-        <div class="mediaTitle">Se7en</div>
+        <img id="popTv" class="poster" src="./public/img/poster6.jpg">
+        <div><img class="locationLogo" src="./public/img/tv.svg"></div>
+        <div id="popTvTitle" class="mediaTitle">Se7en</div>
       </div>
       <div class="alt1 animated4 fadeIn" id="animated4">
         <img class="hulu" src="./public/img/poster4.jpg">
@@ -49,13 +52,13 @@
         <img class="hulu" src="./public/img/poster7.jpg">
         <div id="exploreTitle">Explore more</div>
         <div class="bubbles">
-          <div class="huluBubble">
+          <div id="trending2" class="bubble">
             #Atlanta
           </div>
-          <div class="netflixBubble">
+          <div id="trending3" class="bubble">
             #Stranger Things
           </div>
-          <div class="amazonBubble">
+          <div id="trending4" class="bubble">
             #Grand Tour
           </div>
         </div>
@@ -66,7 +69,7 @@
     </div>
   </div>
 
-  <!-- movieInfo window global -->
+  <script src="./public/js/popular.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/movie-info/index.min.js"></script>
 </body>
 
