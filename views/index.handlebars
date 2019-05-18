@@ -10,7 +10,7 @@
   </div>
 
   <div id="column2">
-    <form>
+    <form method="POST" action="/results">
 
       <div class="form-group">
         <label for="radios-0">
@@ -117,7 +117,8 @@
           required="false">
         <input class="checkbox" type="checkbox" name="amazon" value="0"> I don't know / I don't use Netflix<br>
         <input id="age" class="recomendation" type="text" placeholder="Your age" required="false">
-        <button id="submit" type="submit" value="submit">Submit</button>
+        {{!-- <button id="submit" onclick="window.location.href='/results'" type="submit" value="submit">Submit</button> --}}
+                <button id="submit" type="submit" value="submit">Submit</button>
       </div>
     </form>
   </div>
@@ -126,7 +127,7 @@
 
 </div>
 
-<script src="./public/js/autocomplete.js"></script>
+<script src="./js/autocomplete.js"></script>
 <script type="text/javascript">
   $(document).ready(function (event) {
     $("#submit").on("click", function (event) {
@@ -151,8 +152,6 @@
           $('#amazonRec').val()
         ]
       }
-      console.log(userScore)
-    }
   });
 </script>
 
