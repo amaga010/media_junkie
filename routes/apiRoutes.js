@@ -24,34 +24,6 @@ module.exports = function(app) {
 };
 */
 
-
-// var newUserScore = 0
-// // for age
-// var agesFromSurvey; //from sql data
-// if ((ageScore - 5) <= agesFromSurvey && (ageScore + 5) >= agesFromSurvey){
-//   newUserScore + 1
-// } 
-
-/*
-var newUserScore = {
-    ageScore = $("question1").parseInt(val()),
-    scaleScore: [
-      $("#question2").val(),
-      $("#question3").val()
-    ],
-    booleanScore: [
-      $("#question4").val(),
-      $("#question5").val(),
-      $("#question6").val(),
-      $("#question7").val()
-    ],
-    writtenScore: [
-      $("#question8").val(),
-      $("#question9").val(),
-      $("#question10").val()
-    ]
-}; */
-
 var mysql = require("mysql");
 
 var connection = mysql.createConnection({
@@ -79,7 +51,7 @@ function findMatches() {
   connection.query("SELECT * FROM surveyData", function(err, data) {
 
     // gathering sql data for genre and director
-
+console.log(data)
     // genre/discover score with id comes out like this [{ id: 1, genreScore: 1, directorScore: 1 }]
     var scaleObject = []
     for (var i = 0; i < data.length; i++) {
@@ -89,6 +61,8 @@ function findMatches() {
         directorScore: data[i].director
       }
     };
+    console.log("~`````")
+    console.log(scaleObject)
 
     // id with scores in an array, comes out like this [{ id: 1, scores: [ 1, 1 ] }]
     var sqlScaleData = [];
@@ -98,16 +72,32 @@ function findMatches() {
       newDataObject.scores = [scaleObject[i].genreScore, scaleObject[i].directorScore];
       sqlScaleData.push(newDataObject)
     }
-
+console.log("``~~~``")
+console.log(sqlScaleData)
     // obeject with each id having its own array of scores, comes out like this { '1': [ 1, 1 ]}
     var genreIDObject = {}
-    for (i = 0; i < scaleObject.length; i++) {
-      genreIDObject[scaleObject[i].id] = [scaleObject[i].genreScore, scaleObject[i].directorScore];
+    for (i = 0; i < data.length; i++) {
+      let sqlDataObject = {
+        id: data[i].id,
+        age: data[i].age,
+        genre: data[i].genre,
+        director: data[i].director,
+        alone: data[i].alone,
+        discover: data[i].discover,
+        visual: data[i].visual,
+        plot: data[i].plot,
+        netflix: data[i].netflix, 
+        hulu: data[i].hulu,
+        prime: data[i].prime
+      }
+      genreIDObject[data[i].id] = sqlDataObject;
     }
+    console.log("++++")
+    console.log(genreIDObject)
 
     //executing the first criteria 
 
-    var incomingUserScale = [3, 5]
+    var incomingUserScale = [3, 2]
     var scaleScoresArray = [];
     var bestScaleMatches = []; //this is what will be pushed to next criteria
 
@@ -119,6 +109,8 @@ function findMatches() {
         }
         scaleScoresArray.push( { id:sqlScaleData[i].id, score: scoreDifference } )
     }
+    console.log("****")
+    console.log(scaleScoresArray)
 
     // compare with users and find best matches
     for (var i = 0; i < scaleScoresArray.length; i++){
@@ -126,7 +118,8 @@ function findMatches() {
         bestScaleMatches.push({id: scaleScoresArray[i].id});
       }
     }
-    //console.log(bestScaleMatches)
+    console.log("!@#$%")
+    console.log(bestScaleMatches)
 
     // second criteria:
     // eliminates users who dont have close enough matches based on a boolean score (questions 4/5/6/7)
@@ -137,19 +130,22 @@ function findMatches() {
     for (i = 0; i < bestScaleMatches.length; i++) {
       idForScaleMatches.push(bestScaleMatches[i].id)
     }
+    console.log("*&^")
+    console.log(idForScaleMatches)
 
     // getting the alone, discover, visual, and plot data for the id's
     var booleanObject = []
-    for (var i = 0; i < data.length; i++) {
+    for (var i = 0; i < idForScaleMatches.length; i++) {
       booleanObject[i] = {
-        id: idForScaleMatches[i],
-        aloneScore: data[i].alone,
-        discoverScore: data[i].discover,
-        visualScore: data[i].visual,
-        plotScore: data[i].plot
+        id: genreIDObject[idForScaleMatches[i]].id,
+        aloneScore: genreIDObject[[idForScaleMatches[i]]].alone,
+        discoverScore: genreIDObject[[idForScaleMatches[i]]].discover,
+        visualScore: genreIDObject[[idForScaleMatches[i]]].visual,
+        plotScore: genreIDObject[[idForScaleMatches[i]]].plot
       }
     };
-
+    console.log("~~~~")
+    console.log(booleanObject)
      // id with scores in an array, comes out like this [{ id: 1, scores: [ 1, 1 ] }]
      var sqlBooleanData = [];
      for (var i = 0; i < booleanObject.length; i++) {
@@ -160,14 +156,19 @@ function findMatches() {
         sqlBooleanData.push(newDataObject)
        }
      }
-
+     console.log(sqlBooleanData)
+     console.log("~~~~")
+     console.log(booleanObject)
     // creates an object of an array for the matches, while at the time removing any undefined(unmatched) id's from the array
     var advpObject = {}
     for (i = 0; i < booleanObject.length; i++) {
       if (booleanObject[i].id !== undefined) {
+        console.log(booleanObject[i].id)
         advpObject[booleanObject[i].id] = [booleanObject[i].aloneScore, booleanObject[i].discoverScore, booleanObject[i].visualScore, booleanObject[i].plotScore];
       }
     }
+    console.log("~~~~")
+    console.log(advpObject)
 
     //executing the second criteria 
 
@@ -183,6 +184,8 @@ function findMatches() {
         }
         booleanScoresArray.push( { id:sqlBooleanData[i].id, score: matchScore } )
     }
+    console.log("PPPPP")
+    console.log(sqlBooleanData)
 
     // compare with users and find best matches
     for (var i = 0; i < booleanScoresArray.length; i++){
@@ -202,15 +205,16 @@ function findMatches() {
 
     // getting the show reccomendations for the id's
     var writtenObject = []
-    for (var i = 0; i < data.length; i++) {
+    for (var i = 0; i < idForBooleanMatches.length; i++) {
       writtenObject[i] = {
-        id: idForScaleMatches[i],
-        netflixScore: data[i].netflix,
-        huluScore: data[i].hulu,
-        amazonScore: data[i].amazon,
+        id: genreIDObject[idForBooleanMatches[i]].id,
+        netflixScore: genreIDObject[[idForBooleanMatches[i]]].netflix,
+        huluScore: genreIDObject[[idForBooleanMatches[i]]].hulu,
+        amazonScore: genreIDObject[[idForBooleanMatches[i]]].amazon,
       }
     };
-
+    console.log("$%^$#%^#")
+    console.log(writtenObject)
      // id with scores in an array, comes out like this [{ id: 1, scores: [ 1, 1 ] }]
      var sqlWrittenData = [];
      for (var i = 0; i < writtenObject.length; i++) {
@@ -230,7 +234,9 @@ function findMatches() {
       }
     }
     console.log(recObject)
+    
   });
+
 }
 
 findMatches()
