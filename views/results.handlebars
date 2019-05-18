@@ -2,39 +2,39 @@
   <h1 class="animated1 fadeIn">
     Results
   </h1>
-  <div id="results">
+    <div id="results">
     <div class="animated1 fadeIn moveIn" id="rec1">
-      <img class="poster" src="{{{npm MAIN REC IMG URL}}}">
-      <div><img class="serviceLogo" src="./public/img/{{{algorithm MAIN REC SERVICE}}}.svg"></div>
-      <div class="mediaTitle">{{{npm MAIN REC TITLE}}}</div>
+      <img class="poster" src="{{{MAIN REC IMG URL}}}">
+      <div><img class="serviceLogo" src="./img/{{{algorithm MAIN REC SERVICE}}}.svg"></div>
+      <div class="mediaTitle">{{{MAIN REC TITLE}}}</div>
     </div>
     <div class="location animated2 fadeIn" class="small" id="recGlobal">
-      <img id="popMovie" class="poster" src="./public/img/poster2.jpg">
-      <div><img class="locationLogo" src="./public/img/movie.svg"></div>
+      <img id="popMovie" class="poster" src="./img/poster2.jpg">
+      <div><img class="locationLogo" src="./img/movie.svg"></div>
       <div id="popMovieTitle" class="mediaTitle"></div>
     </div>
     <div class="location animated3 fadeIn" id="recLocal">
-      <img id="popTv" class="poster" src="./public/img/poster6.jpg">
-      <div><img class="locationLogo" src="./public/img/tv.svg"></div>
+      <img id="popTv" class="poster" src="./img/poster6.jpg">
+      <div><img class="locationLogo" src="./img/tv.svg"></div>
       <div id="popTvTitle" class="mediaTitle"></div>
     </div>
     <div class="alt1 animated4 fadeIn" id="animated4">
-      <img src="{{{npm IMG SRC OF TOP NETFLIX}}}">
-      <div><img class="serviceLogo" src="./public/img/netflix.svg"></div>
-      <div class="mediaTitle">{{{npm TOP NETFLIX TITLE}}}</div>
+      <img src="{{{IMG SRC OF TOP NETFLIX}}}">
+      <div><img class="serviceLogo" src="./img/netflix.svg"></div>
+      <div class="mediaTitle">{{{TOP NETFLIX TITLE}}}</div>
     </div>
     <div class="alt1 animated5 fadeIn" id="animated5">
       <img src="{{{IMG SRC OF TOP HULU}}}">
-      <div><img class="serviceLogo" src="./public/img/hulu.svg"></div>
-      <div class="mediaTitle">{{{npm TOP HULU TITLE}}}</div>
+      <div><img class="serviceLogo" src="./img/hulu.svg"></div>
+      <div class="mediaTitle">{{{TOP HULU TITLE}}}</div>
     </div>
     <div class="alt1  animated6 fadeIn" id="animated6">
-      <img src="{{{npm IMG SRC OF TOP AMAZON}}}">
-      <div><img class="serviceLogo" src="./public/img/amazon.svg"></div>
-      <div class="mediaTitle">{{{npm TOP AMAZON TITLE}}}</div>
+      <img src="{{{IMG SRC OF TOP AMAZON}}}">
+      <div><img class="serviceLogo" src="./img/amazon.svg"></div>
+      <div class="mediaTitle">{{{TOP AMAZON TITLE}}}</div>
     </div>
     <div class="alt2 animated7 fadeIn" id="animated7">
-      <img src="./public/img/poster7.jpg">
+      <img src="./img/poster7.jpg">
       <div id="exploreTitle">Discover</div>
       <div class="bubbles">
         <div id="trending2" class="bubble"></div>
@@ -48,5 +48,10 @@
   </div>
 </div>
 
-<script src="./public/js/popular.js"></script>
+<script src="./js/popular.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/movie-info/index.min.js"></script>
+<script type="text/javascript">
+movieInfo('Avatar', function (error, response){
+    console.log(response)
+})
+</script>
