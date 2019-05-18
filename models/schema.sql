@@ -1,8 +1,8 @@
-DROP DATABASE movieJunkie_db
+DROP DATABASE meidaJunkie_db
 
-CREATE DATABASE meidaJunkie_db;
+CREATE DATABASE mediaJunkie_db;
 
-USE movieJunkie_db;
+USE mediaJunkie_db;
 
 DROP TABLE surveyData;
 
