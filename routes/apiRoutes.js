@@ -13,6 +13,7 @@ module.exports = function(app) {
   app.post("/results", function (req, res) {
     connection.query("SELECT * FROM surveyData", function(err, data) {
 
+
     // gathering sql data for genre and director
 //console.log(data)
     // genre/discover score with id comes out like this [{ id: 1, genreScore: 1, directorScore: 1 }]
@@ -133,7 +134,7 @@ module.exports = function(app) {
         }
         booleanScoresArray.push( { id:sqlBooleanData[i].id, score: matchScore } )
     }
-
+    console.log(incomingUserBoolean)
     // compare with users and find best matches
     for (var i = 0; i < booleanScoresArray.length; i++){
       if (booleanScoresArray[i].score >=  3 ){
@@ -189,13 +190,16 @@ module.exports = function(app) {
             }
         }
       }
-    
+    console.log(movieRec)
+    movieInfo(movieRec[0], function (error, response){
+      console.log(response)
+   })
   });
-  movieInfo("Avatar", function (error, response){
+  movieInfo(movieRec[0], function (error, response){
     console.log(response)
  })
   // app.render("/results")
-  })
+})
 
 // first criteria:
 // eliminates users who dont have close enough matches based on a scale score (questions 2/3)
