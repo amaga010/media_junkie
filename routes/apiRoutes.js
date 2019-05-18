@@ -24,34 +24,6 @@ module.exports = function(app) {
 };
 */
 
-
-// var newUserScore = 0
-// // for age
-// var agesFromSurvey; //from sql data
-// if ((ageScore - 5) <= agesFromSurvey && (ageScore + 5) >= agesFromSurvey){
-//   newUserScore + 1
-// } 
-
-/*
-var newUserScore = {
-    ageScore = $("question1").parseInt(val()),
-    scaleScore: [
-      $("#question2").val(),
-      $("#question3").val()
-    ],
-    booleanScore: [
-      $("#question4").val(),
-      $("#question5").val(),
-      $("#question6").val(),
-      $("#question7").val()
-    ],
-    writtenScore: [
-      $("#question8").val(),
-      $("#question9").val(),
-      $("#question10").val()
-    ]
-}; */
-
 var mysql = require("mysql");
 
 var connection = mysql.createConnection({
@@ -72,13 +44,15 @@ connection.connect(function(err) {
 });
 
 // first criteria:
-// eliminate users who dont have close enough matches
-// create a function that will find users that have the least amount of difference between them in respect to the 2nd(genre) and 3rd(director) questions
-// push those users into an array that will move onto the second criteria of elimination
+// eliminates users who dont have close enough matches based on a scale score (questions 2/3)
+// and pushes the matches to be moved on to the second criteria
 
-function scaleScore() {
+function findMatches() {
   connection.query("SELECT * FROM surveyData", function(err, data) {
-    // genre/discover score with id
+
+    // gathering sql data for genre and director
+console.log(data)
+    // genre/discover score with id comes out like this [{ id: 1, genreScore: 1, directorScore: 1 }]
     var scaleObject = []
     for (var i = 0; i < data.length; i++) {
       scaleObject[i] = {
@@ -87,121 +61,186 @@ function scaleScore() {
         directorScore: data[i].director
       }
     };
-    //console.log(scaleObject)
-    var sqlData = [];
+    console.log("~`````")
+    console.log(scaleObject)
 
+    // id with scores in an array, comes out like this [{ id: 1, scores: [ 1, 1 ] }]
+    var sqlScaleData = [];
     for (var i = 0; i < scaleObject.length; i++) {
       var newDataObject = {};
       newDataObject.id = scaleObject[i].id;
       newDataObject.scores = [scaleObject[i].genreScore, scaleObject[i].directorScore];
-      sqlData.push(newDataObject)
+      sqlScaleData.push(newDataObject)
     }
-    // console.log(sqlData)
-    var usersIDObject = {}
-    for (i = 0; i < scaleObject.length; i++) {
-      usersIDObject[scaleObject[i].id] = [scaleObject[i].genreScore, scaleObject[i].directorScore];
+console.log("``~~~``")
+console.log(sqlScaleData)
+    // obeject with each id having its own array of scores, comes out like this { '1': [ 1, 1 ]}
+    var genreIDObject = {}
+    for (i = 0; i < data.length; i++) {
+      let sqlDataObject = {
+        id: data[i].id,
+        age: data[i].age,
+        genre: data[i].genre,
+        director: data[i].director,
+        alone: data[i].alone,
+        discover: data[i].discover,
+        visual: data[i].visual,
+        plot: data[i].plot,
+        netflix: data[i].netflix, 
+        hulu: data[i].hulu,
+        prime: data[i].prime
+      }
+      genreIDObject[data[i].id] = sqlDataObject;
     }
-    console.log(usersIDObject)
+    console.log("++++")
+    console.log(genreIDObject)
+
     //executing the first criteria 
-    var incomingUserScale = [3, 5]
-    var scoresArray = [];
-    var bestMatches = [];
+
+    var incomingUserScale = [3, 2]
+    var scaleScoresArray = [];
+    var bestScaleMatches = []; //this is what will be pushed to next criteria
 
     // iterates through users, then iterates through them again to gather their scores 
-    for (var i = 0; i < sqlData.length; i++) {
+    for (var i = 0; i < sqlScaleData.length; i++) {
       var scoreDifference = 0;
         for (var j = 0; j < incomingUserScale.length; j++) {
-          scoreDifference += (Math.abs(parseInt(sqlData[i].scores[j]) - parseInt(incomingUserScale[j])))
+          scoreDifference += (Math.abs(parseInt(sqlScaleData[i].scores[j]) - parseInt(incomingUserScale[j])))
         }
-        scoresArray.push( { id:sqlData[i].id, score: scoreDifference } )
+        scaleScoresArray.push( { id:sqlScaleData[i].id, score: scoreDifference } )
     }
-    console.log(scoresArray)
+    console.log("****")
+    console.log(scaleScoresArray)
+
     // compare with users and find best matches
-    for (var i = 0; i < scoresArray.length; i++){
-      if (scoresArray[i].score <=  3 ){
-        bestMatches.push({id: scoresArray[i].id, scores: usersIDObject[scoresArray[i].id]});
+    for (var i = 0; i < scaleScoresArray.length; i++){
+      if (scaleScoresArray[i].score <=  3 ){
+        bestScaleMatches.push({id: scaleScoresArray[i].id});
       }
-      // if (scoresArray[i] <= 3) {
-      //   bestMatches.push(scoresArray)
-      // }
+    }
+    console.log("!@#$%")
+    console.log(bestScaleMatches)
+
+    // second criteria:
+    // eliminates users who dont have close enough matches based on a boolean score (questions 4/5/6/7)
+    // and pushes the matches to be moved on to the second criteria
+
+    // getting the id's for the matches from the previous criteria
+    var idForScaleMatches = [];
+    for (i = 0; i < bestScaleMatches.length; i++) {
+      idForScaleMatches.push(bestScaleMatches[i].id)
+    }
+    console.log("*&^")
+    console.log(idForScaleMatches)
+
+    // getting the alone, discover, visual, and plot data for the id's
+    var booleanObject = []
+    for (var i = 0; i < idForScaleMatches.length; i++) {
+      booleanObject[i] = {
+        id: genreIDObject[idForScaleMatches[i]].id,
+        aloneScore: genreIDObject[[idForScaleMatches[i]]].alone,
+        discoverScore: genreIDObject[[idForScaleMatches[i]]].discover,
+        visualScore: genreIDObject[[idForScaleMatches[i]]].visual,
+        plotScore: genreIDObject[[idForScaleMatches[i]]].plot
+      }
+    };
+    console.log("~~~~")
+    console.log(booleanObject)
+     // id with scores in an array, comes out like this [{ id: 1, scores: [ 1, 1 ] }]
+     var sqlBooleanData = [];
+     for (var i = 0; i < booleanObject.length; i++) {
+      var newDataObject = {};
+       if (booleanObject[i].id !== undefined) {
+        newDataObject.id = booleanObject[i].id;
+        newDataObject.scores = [booleanObject[i].aloneScore, booleanObject[i].discoverScore, booleanObject[i].visualScore, booleanObject[i].plotScore];
+        sqlBooleanData.push(newDataObject)
+       }
+     }
+     console.log(sqlBooleanData)
+     console.log("~~~~")
+     console.log(booleanObject)
+    // creates an object of an array for the matches, while at the time removing any undefined(unmatched) id's from the array
+    var advpObject = {}
+    for (i = 0; i < booleanObject.length; i++) {
+      if (booleanObject[i].id !== undefined) {
+        console.log(booleanObject[i].id)
+        advpObject[booleanObject[i].id] = [booleanObject[i].aloneScore, booleanObject[i].discoverScore, booleanObject[i].visualScore, booleanObject[i].plotScore];
+      }
+    }
+    console.log("~~~~")
+    console.log(advpObject)
+
+    //executing the second criteria 
+
+    // iterates through users, then iterates through them again to gather their scores 
+    var incomingUserBoolean = [1, 0, 1, 0];
+    var booleanScoresArray = []
+    var bestBooleanMatches = []
+    for (var i = 0; i < sqlBooleanData.length; i++) {
+      var matchScore = 0;
+        for (var j = 0; j < incomingUserBoolean.length; j++) {
+          if ((Math.abs(parseInt(sqlBooleanData[i].scores[j]) - parseInt(incomingUserBoolean[j]))) == 0)
+          matchScore += 1
+        }
+        booleanScoresArray.push( { id:sqlBooleanData[i].id, score: matchScore } )
+    }
+    console.log("PPPPP")
+    console.log(sqlBooleanData)
+
+    // compare with users and find best matches
+    for (var i = 0; i < booleanScoresArray.length; i++){
+      if (booleanScoresArray[i].score >=  3 ){
+        bestBooleanMatches.push({id: booleanScoresArray[i].id});
+      }
     }
 
-    //var newestMatches = sqlData[bestMatches];
-    console.log(bestMatches)
+    // third criteria
+    // of the matches form above return their show/movie reccommendation
+
+    // getting the id's for the matches from the previous criteria
+    var idForBooleanMatches = [];
+    for (i = 0; i < bestBooleanMatches.length; i++) {
+      idForBooleanMatches.push(bestBooleanMatches[i].id)
+    }
+
+    // getting the show reccomendations for the id's
+    var writtenObject = []
+    for (var i = 0; i < idForBooleanMatches.length; i++) {
+      writtenObject[i] = {
+        id: genreIDObject[idForBooleanMatches[i]].id,
+        netflixScore: genreIDObject[[idForBooleanMatches[i]]].netflix,
+        huluScore: genreIDObject[[idForBooleanMatches[i]]].hulu,
+        amazonScore: genreIDObject[[idForBooleanMatches[i]]].amazon,
+      }
+    };
+    console.log("$%^$#%^#")
+    console.log(writtenObject)
+     // id with scores in an array, comes out like this [{ id: 1, scores: [ 1, 1 ] }]
+     var sqlWrittenData = [];
+     for (var i = 0; i < writtenObject.length; i++) {
+      var newDataObject = {};
+       if (writtenObject[i].id == idForBooleanMatches) {
+        newDataObject.id = writtenObject[i].id;
+        newDataObject.scores = [writtenObject[i].netflixScore, writtenObject[i].huluScore, writtenObject[i].amazonScore];
+        sqlWrittenData.push(newDataObject)
+       }
+     }
+
+    // creates an object of an array for the matches
+    var recObject = {}
+    for (i = 0; i < writtenObject.length; i++) {
+      if (writtenObject[i].id == idForBooleanMatches) {
+        recObject[writtenObject[i].id] = [writtenObject[i].netflixScore, writtenObject[i].huluScore, writtenObject[i].amazonScore];
+      }
+    }
+    console.log(recObject)
+    
   });
+
 }
 
-scaleScore()
-
-// first criteria:
-// eliminate users who dont have close enough matches
-// create a function that will find users that have the least amount of difference between them in respect to the 2nd(genre) and 3rd(director) questions
-// push those users into an array that will move onto the second criteria of elimination
-// var incomingUserScale = [27, 3, 5, false, false, true, false, "The Ozarks", "The Act", "I don't use this service"]
-// var scoresArray = [];
-// var bestMatches = [];
-
-// // iterates through users, then iterates through them again to gather their scores 
-// for (var i = 0; i < scaleObject.length; i++) {
-//   var scoreDifference = 0;
-//     for (var j = 0; incomingUserScale.length; j++) {
-//       scoreDifference += (Math.abs(parseInt(storedDataScale[i].scaleScore[j]) - parseInt(incomingUserScale[j])))
-//     }
-//     scoresArray.push(scoreDifference)
-// }
-
-// // compare with users and find best matches
-// for (var i = 0; i < scoresArray.length; i++){
-//   if (scoresArray[i] <= scoresArray[bestMatches]){
-//     bestMatches = i
-//   }
-// }
-
-// var newestMatches = storedDataScale[bestMatch];
-
-
-// // second criteria:
-// // from the array matches of the first criteria do the following:
-// // eliminate users who don't have close enough scores by
-// // giving a user a score based on number of column matches. highest score is 4, lowest is 0
-// // user has a score with each id from mysql table
-
-// // create a function that creates a score between two users 
-// // have that function run againts all others users from the mysql table
-// // from that pull out id's that have matching scores of 3 or higer to be put into a new array of possible users
-
-// var userScore = 0;
-// var incomingUserBoolean = booleanScore;
-// var storedDataBoolean; // data from mySQL. i.e the alone, discover, visual, and plot columns
-// var booleanSurveryData = {}
-// for (i = 0; i < storedDataBoolean; /*alone column*/ i++) {
-//   if (incomingUserBoolean[0] == storedDataBoolean) {
-//     userScore + 1
-//   };
-// };
-
-// for (i = 0; i < storedDataBoolean; /*discover column*/ i++) {
-//   if (incomingUserBoolean[0] == storedDataBoolean) {
-//     userScore + 1
-//   };
-// };
-
-// for (i = 0; i < storedDataBoolean; /*visual column*/ i++) {
-//   if (incomingUserBoolean[0] == storedDataBoolean) {
-//     userScore + 1
-//   };
-// };
-
-// for (i = 0; i < storedDataBoolean; /*plot column*/ i++) {
-//   if (incomingUserBoolean[0] == storedDataBoolean) {
-//     userScore + 1
-//   };
-// };
-
-// // third criteria:
-// // of the matches from above return their show/movie recommendation 
-
+findMatches()
 // // if there are too many matches (lets say 10) narrow the list down by using age as a factor
 // // if age of id is +- of the user then push into a new array
-// // from that array randomly select a user id and display their movie reccemdation
+// // from that array randomly select a user id and display their movie reccomdation
 // // if there are less than 10 matches then directly go to function that chooses an id at random
