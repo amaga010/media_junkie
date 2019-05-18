@@ -131,7 +131,7 @@
             required="true">
           <input class="checkbox" type="checkbox" name="amazon" value="0"> I don't know / I don't use Netflix<br>
           <input id="age" class="recomendation" type="text" placeholder="Your age" required="true">
-          <button type="submit" value="submit">Submit</button>
+          <button id="submit" type="submit" value="submit">Submit</button>
         </div>
       </form>
     </div>
@@ -141,6 +141,34 @@
   </div>
 
   <script src="./public/js/autocomplete.js"></script>
+  <script>
+    $(document).ready(function (event) {
+      $("#submit").on("click", function (event) {
+        event.preventDefault();
+        collectData();
+      })
+      function collectData() {
+        var userScore = {
+          scaleScores: [
+            $("input[name='genre']:checked").val(),
+            $("input[name='director']:checked").val(),
+          ],
+          booleanScores: [
+            $("input[name='alone']:checked").val(),
+            $("input[name='discover']:checked").val(),
+            $("input[name='visual']:checked").val(),
+            $("input[name='plot']:checked").val(),
+          ],
+          writtenScores: [
+            $('#netflixRec').val(),
+            $('#huluRec').val(),
+            $('#amazonRec').val()
+          ]
+        }
+        console.log(userScore)
+      }
+    });
+  </script>
 </body>
 
 </html>
