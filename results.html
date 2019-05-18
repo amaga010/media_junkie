@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Media Junkie</title>
+  <link rel="stylesheet" href="./public/styles/style.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+<body>
+  <div id="content">
+    <h1 class="animated1 fadeIn">
+      Results
+    </h1>
+    <div id="results">
+      <div class="netflix animated1 fadeIn moveIn" id="rec1">
+        <img class="poster" src="./public/img/poster3.jpg">
+        <div><img class="serviceLogo" src="./public/img/netflix.svg"></div>
+        <div class="mediaTitle">The Fifth Element</div>
+      </div>
+      <div class="location animated2 fadeIn" class="small" id="recGlobal">
+        <img id="popMovie" class="poster" src="./public/img/poster2.jpg">
+        <div><img class="locationLogo" src="./public/img/movie.svg"></div>
+        <div id="popMovieTitle" class="mediaTitle">John Wick</div>
+      </div>
+      <div class="location animated3 fadeIn" id="recLocal">
+        <img id="popTv" class="poster" src="./public/img/poster6.jpg">
+        <div><img class="locationLogo" src="./public/img/tv.svg"></div>
+        <div id="popTvTitle" class="mediaTitle">Se7en</div>
+      </div>
+      <div class="alt1 animated4 fadeIn" id="animated4">
+        <img src="./public/img/poster4.jpg">
+        <div><img class="serviceLogo" src="./public/img/netflix.svg"></div>
+        <div class="mediaTitle">Indiana Jones</div>
+      </div>
+      <div class="alt1 animated5 fadeIn" id="animated5">
+        <img src="./public/img/poster5.jpg">
+        <div><img class="serviceLogo" src="./public/img/hulu.svg"></div>
+        <div class="mediaTitle">Blade Runner</div>
+      </div>
+      <div class="alt1  animated6 fadeIn" id="animated6">
+        <img src="./public/img/poster1.jpg">
+        <div><img class="serviceLogo" src="./public/img/amazon.svg"></div>
+        <div class="mediaTitle">Alien</div>
+      </div>
+      <div class="alt2 animated7 fadeIn" id="animated7">
+        <img id="trending" src="./public/img/poster7.jpg">
+        <div id="exploreTitle">Discover</div>
+        <div class="bubbles">
+          <div id="trending2" class="bubble">
+            #Atlanta
+          </div>
+          <div id="trending3" class="bubble">
+            #Stranger Things
+          </div>
+          <div id="trending4" class="bubble">
+            #Grand Tour
+          </div>
+        </div>
+      </div>
+      <div class="alt3 animated8 fadeIn" id="animated8">
+        <div id="quip">or you could just rewatch The Office again..</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./public/js/popular.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/movie-info/index.min.js"></script>
+</body>
+
+</html>
