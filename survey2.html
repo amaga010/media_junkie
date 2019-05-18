@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./public/styles/style.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+  <title>Media Junkie</title>
+</head>
+
+<body>
+  <div id="survey">
+    <div id="column1">
+      <h1>Media Junkie</h1>
+      <div class="question">How important is genre?</div>
+      <div class="question">How important is the director?</div>
+      <div class="question">Watching alone or with others?</div>
+      <div class="question">How do you discover Movies/Shows?</div>
+      <div class="question">Which is more important?</div>
+      <div class="question">Which is more important?</div>
+    </div>
+
+    <div id="column2">
+      <form>
+
+        <div class="form-group">
+          <label for="radios-0">
+            <input type="radio" name="genre" class="genre" value="1">
+            1
+          </label>
+          <label for="radios-1">
+            <input type="radio" name="genre" class="genre" value="2">
+            2
+          </label>
+          <label for="radios-2">
+            <input type="radio" name="genre" class="genre" value="3">
+            3
+          </label>
+          <label for="radios-3">
+            <input type="radio" name="genre" class="genre" value="4">
+            4
+          </label>
+          <label for="radios-4">
+            <input type="radio" name="genre" class="genre" value="5">
+            5
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="radios-0">
+            <input type="radio" name="director" class="director" value="1">
+            1
+          </label>
+          <label for="radios-1">
+            <input type="radio" name="director" class="director" value="2">
+            2
+          </label>
+          <label for="radios-2">
+            <input type="radio" name="director" class="director" value="3">
+            3
+          </label>
+          <label for="radios-3">
+            <input type="radio" name="director" class="director" value="4">
+            4
+          </label>
+          <label for="radios-4">
+            <input type="radio" name="director" class="director" value="5">
+            5
+          </label>
+        </div>
+
+        <div class="form-group">
+          <div class="radio">
+            <input type="radio" name="alone" id="radio-alone-0" value="0">
+            Alone
+          </div>
+          <div class="radio">
+            <input type="radio" name="alone" id="radio-alone-1" value="1">
+            With others
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="radio">
+            <input type="radio" name="discover" id="radio-discover-0" value="0">
+            Word of Mouth
+          </div>
+          <div class="radio">
+            <input type="radio" name="discover" id="radio-discover-1" value="1">
+            Internet / Trailers
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="radio">
+            <input type="radio" name="visual" id="radio-visual-0" value="0">
+            Special Effects
+          </div>
+          <div class="radio">
+            <input type="radio" name="visual" id="radio-visual-1" value="1">
+            Cinematography
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="radio">
+            <input type="radio" name="plot" id="radio-journey-0" value="0">
+            The Destination
+          </div>
+          <div class="radio">
+            <input type="radio" name="plot" id="radio-journey-1" value="1">
+            The Journey
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="focused" id="searchResults1"></div>
+          <input id="amazonRec" class="recomendation" type="text" placeholder="Recoment a show on Amazon">
+          <input class="checkbox" type="checkbox" name="netflix" value="0"> I don't know / I don't use Amazon<br>
+          <div class="focused" id="searchResults2"></div>
+          <input id="huluRec" class="recomendation" type="text" placeholder="Recoment a show on Hulu" required="true">
+          <input class="checkbox" type="checkbox" name="hulu" value="0"> I don't know / I don't use Hulu<br>
+          <div class="focused" id="searchResults3"></div>
+          <input id="netflixRec" class="recomendation" type="text" placeholder="Recoment a show on Netflix"
+            required="true">
+          <input class="checkbox" type="checkbox" name="amazon" value="0"> I don't know / I don't use Netflix<br>
+          <input id="age" class="recomendation" type="text" placeholder="Your age" required="true">
+          <button id="submit" type="submit" value="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  </div>
+
+  <script src="./public/js/autocomplete.js"></script>
+  <script>
+    $(document).ready(function (event) {
+      $("#submit").on("click", function (event) {
+        event.preventDefault();
+        collectData();
+      })
+      function collectData() {
+        var userScore = {
+          scaleScores: [
+            $("input[name='genre']:checked").val(),
+            $("input[name='director']:checked").val(),
+          ],
+          booleanScores: [
+            $("input[name='alone']:checked").val(),
+            $("input[name='discover']:checked").val(),
+            $("input[name='visual']:checked").val(),
+            $("input[name='plot']:checked").val(),
+          ],
+          writtenScores: [
+            $('#netflixRec').val(),
+            $('#huluRec').val(),
+            $('#amazonRec').val()
+          ]
+        }
+        console.log(userScore)
+      }
+    });
+  </script>
+</body>
+
+</html>

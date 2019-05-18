@@ -1,57 +1,20 @@
-//var db = require("../models");
-/*
+var connection = require("../config/connection");
+var movieInfo = require('movie-info')
+
 module.exports = function(app) {
-  // Get all examples
-  app.get("/api/examples", function(req, res) {
-    db.Example.findAll({}).then(function(dbExamples) {
-      res.json(dbExamples);
-    });
+  app.get("/", function(req, res){
+    res.render("index");
   });
 
-  // Create a new example
-  app.post("/api/examples", function(req, res) {
-    db.Example.create(req.body).then(function(dbExample) {
-      res.json(dbExample);
-    });
-  });
+  // app.get('/results', function (req, res) {
+  //     app.render("results");
+  //    });
 
-  // Delete an example by id
-  app.delete("/api/examples/:id", function(req, res) {
-    db.Example.destroy({ where: { id: req.params.id } }).then(function(dbExample) {
-      res.json(dbExample);
-    });
-  });
-};
-*/
-
-var mysql = require("mysql");
-
-var connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "webuser",
-  password: "UCR",
-  database: "movieJunkie_db"
-});
-
-connection.connect(function(err) {
-  if (err) {
-    console.error("error connecting: " + err.stack);
-    return;
-  }
-
-  console.log("connected as id " + connection.threadId);
-});
-
-// first criteria:
-// eliminates users who dont have close enough matches based on a scale score (questions 2/3)
-// and pushes the matches to be moved on to the second criteria
-
-function findMatches() {
-  connection.query("SELECT * FROM surveyData", function(err, data) {
+  app.post("/results", function (req, res) {
+    connection.query("SELECT * FROM surveyData", function(err, data) {
 
     // gathering sql data for genre and director
-console.log(data)
+//console.log(data)
     // genre/discover score with id comes out like this [{ id: 1, genreScore: 1, directorScore: 1 }]
     var scaleObject = []
     for (var i = 0; i < data.length; i++) {
@@ -92,9 +55,12 @@ console.log(data)
 
     //executing the first criteria 
 
-    var incomingUserScale = [3, 2]
+    var incomingUserScale = req.body.scaleScores
     var scaleScoresArray = [];
     var bestScaleMatches = []; //this is what will be pushed to next criteria
+
+    console.log("Logging req.body....");
+    console.log(req.body.scaleScores);
 
     // iterates through users, then iterates through them again to gather their scores 
     for (var i = 0; i < sqlScaleData.length; i++) {
@@ -156,7 +122,7 @@ console.log(data)
     //executing the second criteria 
 
     // iterates through users, then iterates through them again to gather their scores 
-    var incomingUserBoolean = [1, 0, 1, 0];
+    var incomingUserBoolean = req.body.booleanScores;
     var booleanScoresArray = []
     var bestBooleanMatches = []
     for (var i = 0; i < sqlBooleanData.length; i++) {
@@ -199,7 +165,7 @@ console.log(data)
      var sqlWrittenData = [];
      for (var i = 0; i < writtenObject.length; i++) {
       var newDataObject = {};
-       if (writtenObject[i].id == idForBooleanMatches) {
+       if (writtenObject[i].id == idForBooleanMatches[i]) {
         newDataObject.id = writtenObject[i].id;
         newDataObject.scores = [writtenObject[i].netflixScore, writtenObject[i].huluScore, writtenObject[i].amazonScore];
         sqlWrittenData.push(newDataObject)
@@ -209,18 +175,34 @@ console.log(data)
     // creates an object of an array for the matches
     var recObject = {}
     for (i = 0; i < writtenObject.length; i++) {
-      if (writtenObject[i].id == idForBooleanMatches) {
+      if (writtenObject[i].id == idForBooleanMatches[i]) {
         recObject[writtenObject[i].id] = [writtenObject[i].netflixScore, writtenObject[i].huluScore, writtenObject[i].amazonScore];
       }
     }
-    console.log(recObject)
+    var movieRec = []
+    for (i = 0; i < writtenObject.length; i++) {
+        movieRec.push(writtenObject[i].netflixScore)
+        if (writtenObject[i].netflixScore == undefined) {
+            movieRec.push(writtenObject[i].huluScore)
+            if (writtenObject[i].huluScore == undefined) {
+                movieRec.push(writtenObject[i].amazonScore)
+            }
+        }
+      }
     
   });
+  movieInfo("Avatar", function (error, response){
+    console.log(response)
+ })
+  // app.render("/results")
+  })
 
+// first criteria:
+// eliminates users who dont have close enough matches based on a scale score (questions 2/3)
+// and pushes the matches to be moved on to the second criteria
+
+//function findMatches() {
+
+//}
 }
-
-findMatches()
-// // if there are too many matches (lets say 10) narrow the list down by using age as a factor
-// // if age of id is +- of the user then push into a new array
-// // from that array randomly select a user id and display their movie reccomdation
-// // if there are less than 10 matches then directly go to function that chooses an id at random
+//findMatches()
