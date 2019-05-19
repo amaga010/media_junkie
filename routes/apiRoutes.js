@@ -190,16 +190,35 @@ module.exports = function (app) {
           }
         }
       }
-      console.log(movieRec)
+      console.log(movieRec[0]);
       movieInfo(movieRec[0], function (error, response) {
-        console.log(response)
-      })
+        console.log(response);
+      });
+
+      // gets most popular netflix recommendation
+      connection.query("select netflix, COUNT(netflix) AS MOST_FREQUENT from surveyData GROUP BY netflix ORDER BY COUNT(netflix) DESC", function (err, data) {
+        netflixPop = data[1].netflix;
+        console.log(netflixPop);
+        movieInfo(netflixPop, function (error, response) {
+          console.log('netflixPop' + response)
+        })
+      });
+      // gets most popular hulu recommendation
+      connection.query("select hulu, COUNT(hulu) AS MOST_FREQUENT from surveyData GROUP BY hulu ORDER BY COUNT(hulu) DESC", function (err, data) {
+        let huluPop = data[1].hulu;
+        console.log(huluPop);
+        movieInfo(huluPop, function (error, response) {
+          console.log('huluPop' + response)
+        })
+      });
+      // gets most common amazon recommendation
+      connection.query("select prime, COUNT(prime) AS MOST_FREQUENT from surveyData GROUP BY prime ORDER BY COUNT(prime) DESC", function (err, data) {
+        let primePop = data[1].prime;
+        console.log(primePop);
+        movieInfo(primePop, function (error, response) {
+          console.log('amazonPop' + response)
+        })
+      });
     });
-    movieInfo(movieRec[0], function (error, response) {
-      console.log(response)
-
-      app.render("results", response);
-    })
-
   })
 }
