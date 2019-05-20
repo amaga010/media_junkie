@@ -11,6 +11,38 @@ module.exports = function (app) {
   //    });
 
   app.post("/results", function (req, res) {
+    let results = [];
+    connection.query("select netflix, COUNT(netflix) AS MOST_FREQUENT from surveyData GROUP BY netflix ORDER BY COUNT(netflix) DESC", function (err, data) {
+      let netflixPop = null;
+      if (data[0] != 0) {
+        netflixPop = data[1].netflix;
+      } else {
+        netflixPop = data[0].netflix;
+      }
+      results.push(netflixPop);
+    });
+
+    connection.query("select hulu, COUNT(hulu) AS MOST_FREQUENT from surveyData GROUP BY hulu ORDER BY COUNT(hulu) DESC", function (err, data) {
+      let huluPop = null;
+      if (data[0] != '0') {
+        huluPop = data[1].hulu;
+      } else {
+        huluPop = data[0].hulu;
+      }
+      results.push(huluPop);
+    });
+
+    connection.query("select prime, COUNT(prime) AS MOST_FREQUENT from surveyData GROUP BY prime ORDER BY COUNT(prime) DESC", function (err, data) {
+      let primePop = null;
+      if (data[0] != '0') {
+        primePop = data[1].prime;
+      } else {
+        primePop = data[0].prime;
+      }
+      results.push(primePop);
+    });
+
+
     connection.query("SELECT * FROM surveyData", function (err, data) {
 
 
@@ -59,9 +91,6 @@ module.exports = function (app) {
       var incomingUserScale = req.body.scaleScores
       var scaleScoresArray = [];
       var bestScaleMatches = []; //this is what will be pushed to next criteria
-
-      console.log("Logging req.body....");
-      console.log(req.body.scaleScores);
 
       // iterates through users, then iterates through them again to gather their scores 
       for (var i = 0; i < sqlScaleData.length; i++) {
@@ -134,7 +163,6 @@ module.exports = function (app) {
         }
         booleanScoresArray.push({ id: sqlBooleanData[i].id, score: matchScore })
       }
-      console.log(incomingUserBoolean)
       // compare with users and find best matches
       for (var i = 0; i < booleanScoresArray.length; i++) {
         if (booleanScoresArray[i].score >= 3) {
@@ -189,36 +217,22 @@ module.exports = function (app) {
             movieRec.push(writtenObject[i].amazonScore)
           }
         }
-      }
-      console.log(movieRec[0]);
-      movieInfo(movieRec[0], function (error, response) {
-        console.log(response);
-      });
+      };
 
-      // gets most popular netflix recommendation
-      connection.query("select netflix, COUNT(netflix) AS MOST_FREQUENT from surveyData GROUP BY netflix ORDER BY COUNT(netflix) DESC", function (err, data) {
-        netflixPop = data[1].netflix;
-        console.log(netflixPop);
-        movieInfo(netflixPop, function (error, response) {
-          console.log('netflixPop' + response)
-        })
-      });
-      // gets most popular hulu recommendation
-      connection.query("select hulu, COUNT(hulu) AS MOST_FREQUENT from surveyData GROUP BY hulu ORDER BY COUNT(hulu) DESC", function (err, data) {
-        let huluPop = data[1].hulu;
-        console.log(huluPop);
-        movieInfo(huluPop, function (error, response) {
-          console.log('huluPop' + response)
-        })
-      });
-      // gets most common amazon recommendation
-      connection.query("select prime, COUNT(prime) AS MOST_FREQUENT from surveyData GROUP BY prime ORDER BY COUNT(prime) DESC", function (err, data) {
-        let primePop = data[1].prime;
-        console.log(primePop);
-        movieInfo(primePop, function (error, response) {
-          console.log('amazonPop' + response)
-        })
-      });
+      let topPick = movieRec[1];
+      results.push(topPick);
+      console.log(results);
     });
-  })
-}
+
+    // app.render("results")
+  });
+
+  // first criteria:
+  // eliminates users who dont have close enough matches based on a scale score (questions 2/3)
+  // and pushes the matches to be moved on to the second criteria
+
+  //function findMatches() {
+
+  //}
+};
+//findMatches()
