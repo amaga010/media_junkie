@@ -17,7 +17,7 @@ function getPopularMedia() {
     $('#popTvTitle').html(response.results[0].name);
   });
 
-  var queryURL = "https://api.themoviedb.org/3/trending/all/day?api_key=ffb937069845c6fafb524eb3edfed81c";
+  var queryURL = "https://api.themoviedb.org/3/trending/tv/day?api_key=ffb937069845c6fafb524eb3edfed81c";
   $.ajax({
     url: queryURL,
     method: "GET"

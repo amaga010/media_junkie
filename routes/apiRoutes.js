@@ -1,47 +1,47 @@
+// ERROR: when the latter answers are submitted (5, 5, with others, internet, cine, journey) the movieRec comes back undefined
+
 var connection = require("../config/connection");
-var movieInfo = require('movie-info')
+const movieInfo = require('movie-info');
 
 module.exports = function (app) {
   app.get("/", function (req, res) {
     res.render("index");
   });
 
-  // app.get('/results', function (req, res) {
-  //     app.render("results");
-  //    });
-
-  app.post("/results", function (req, res) {
+  app.post("/results/", function (req, res) {
     let results = [];
-    connection.query("select netflix, COUNT(netflix) AS MOST_FREQUENT from surveyData GROUP BY netflix ORDER BY COUNT(netflix) DESC", function (err, data) {
+    connection.query("select netflix, COUNT(netflix) AS MOST_FREQUENT from surveyData GROUP BY netflix ORDER BY COUNT(netflix) DESC LIMIT 2", function (err, data) {
       let netflixPop = null;
-      if (data[0] != 0) {
-        netflixPop = data[1].netflix;
-      } else {
-        netflixPop = data[0].netflix;
+      for (i = 0; i < data.length; i++) {
+        if (data[i].netflix != '0') {
+          netflixPop = data[i].netflix;
+        } else {
+        }
       }
       results.push(netflixPop);
     });
 
-    connection.query("select hulu, COUNT(hulu) AS MOST_FREQUENT from surveyData GROUP BY hulu ORDER BY COUNT(hulu) DESC", function (err, data) {
+    connection.query("select hulu, COUNT(hulu) AS MOST_FREQUENT from surveyData GROUP BY hulu ORDER BY COUNT(hulu) DESC LIMIT 2", function (err, data) {
       let huluPop = null;
-      if (data[0] != '0') {
-        huluPop = data[1].hulu;
-      } else {
-        huluPop = data[0].hulu;
+      for (i = 0; i < data.length; i++) {
+        if (data[i].hulu != '0') {
+          huluPop = data[i].hulu;
+        } else {
+        }
       }
       results.push(huluPop);
     });
 
-    connection.query("select prime, COUNT(prime) AS MOST_FREQUENT from surveyData GROUP BY prime ORDER BY COUNT(prime) DESC", function (err, data) {
+    connection.query("select prime, COUNT(prime) AS MOST_FREQUENT from surveyData GROUP BY prime ORDER BY COUNT(prime) DESC LIMIT 2", function (err, data) {
       let primePop = null;
-      if (data[0] != '0') {
-        primePop = data[1].prime;
-      } else {
-        primePop = data[0].prime;
+      for (i = 0; i < data.length; i++) {
+        if (data[i].prime != '0') {
+          primePop = data[i].prime;
+        } else {
+        }
       }
       results.push(primePop);
     });
-
 
     connection.query("SELECT * FROM surveyData", function (err, data) {
 
@@ -200,7 +200,6 @@ module.exports = function (app) {
           sqlWrittenData.push(newDataObject)
         }
       }
-
       // creates an object of an array for the matches
       var recObject = {}
       for (i = 0; i < writtenObject.length; i++) {
@@ -218,13 +217,19 @@ module.exports = function (app) {
           }
         }
       };
-
-      let topPick = movieRec[1];
+      let topPick = null;
+      for (i = 0; i < 3; i++) {
+        if (movieRec[i] != '0') {
+          topPick = movieRec[i];
+        } else {
+        }
+      }
       results.push(topPick);
       console.log(results);
+      res.render("results", {
+        results
+      });
     });
-
-    // app.render("results")
   });
 
   // first criteria:
@@ -236,3 +241,4 @@ module.exports = function (app) {
   //}
 };
 //findMatches()
+

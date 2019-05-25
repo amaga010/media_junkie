@@ -4,9 +4,10 @@
   </h1>
   <div id="results">
     <div class="animated1 fadeIn moveIn" id="rec1">
-      <img class="poster" src="">
-      <div><img class="serviceLogo" src="http://image.tmdb.org/t/p/original{{response.poster_path}}"></div>
-      <div class="mediaTitle">{{response.title}}</div>
+      <img id="mainRecImg" class="poster" src="">
+      <div><img class="serviceLogo" src="">
+      </div>
+      <div id="mainRec" class="mediaTitle">{{results.[3]}}</div>
     </div>
     <div class="location animated2 fadeIn" class="small" id="recGlobal">
       <img id="popMovie" class="poster" src="">
@@ -19,22 +20,22 @@
       <div id="popTvTitle" class="mediaTitle"></div>
     </div>
     <div class="alt1 animated4 fadeIn" id="animated4">
-      <img src="http://image.tmdb.org/t/p/original">
+      <img id="netflixPopImg" src="">
       <div><img class="serviceLogo" src="./img/netflix.svg"></div>
-      <div class="mediaTitle"></div>
+      <div id="netflixPop" class="mediaTitle">{{results.[0]}}</div>
     </div>
     <div class="alt1 animated5 fadeIn" id="animated5">
-      <img src="http://image.tmdb.org/t/p/original">
+      <img id="huluPopImg" src="">
       <div><img class="serviceLogo" src="./img/hulu.svg"></div>
-      <div class="mediaTitle"></div>
+      <div id="huluPop" class="mediaTitle">{{results.[1]}}</div>
     </div>
     <div class="alt1  animated6 fadeIn" id="animated6">
-      <img src="http://image.tmdb.org/t/p/original">
+      <img id="amazonPopImg" src="">
       <div><img class="serviceLogo" src="./img/amazon.svg"></div>
-      <div class="mediaTitle"></div>
+      <div id="amazonPop" class="mediaTitle">{{results.[2]}}</div>
     </div>
     <div class="alt2 animated7 fadeIn" id="animated7">
-      <img src="./img/poster7.jpg">
+      <img id="trending" src="">
       <div id="exploreTitle">Discover</div>
       <div class="bubbles">
         <div id="trending2" class="bubble"></div>
@@ -50,3 +51,98 @@
 
 <script src="./js/popular.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/movie-info/index.min.js"></script>
+<script>
+  var searchTitle = $('#mainRec').text();
+  var queryURL = "https://www.omdbapi.com/?t=" + searchTitle + "&y=&plot=short&apikey=trilogy";
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function (response) {
+    $('#mainRecImg').attr('src', response.Poster);
+    $('#mainRec').text(response.Title);
+  });
+</script>
+
+<script>
+  var searchTitle = $('#netflixPop').text();
+  var queryURL =
+    "https://api.themoviedb.org/3/search/multi?api_key=ffb937069845c6fafb524eb3edfed81c&language=en-US&query=" +
+    searchTitle + "&page=1&include_adult=false";
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function (response) {
+    let backdropSrc = JSON.stringify('https://image.tmdb.org/t/p/w370_and_h556_bestv2' +
+      response.results[0].backdrop_path);
+    $('#netflixPop').attr('src', backdropSrc);
+    $('#netflixPopImg').html(response.results[0].name);
+  });
+</script>
+
+<script>
+  var searchTitle = $('#netflixPop').text();
+  var queryURL = "https://www.omdbapi.com/?t=" + searchTitle + "&y=&plot=short&apikey=trilogy";
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function (response) {
+    $('#netflixPopImg').attr('src', response.Poster);
+    $('#netflixPop').text(response.Title);
+  });
+</script>
+
+<script>
+  var searchTitle = $('#huluPop').text();
+  var queryURL =
+    "https://api.themoviedb.org/3/search/multi?api_key=ffb937069845c6fafb524eb3edfed81c&language=en-US&query=" +
+    searchTitle + "&page=1&include_adult=false";
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function (response) {
+    let backdropSrc = JSON.stringify('https://image.tmdb.org/t/p/w370_and_h556_bestv2' +
+      response.results[0].backdrop_path);
+    $('#huluPop').attr('src', backdropSrc);
+    $('#huluPopImg').html(response.results[0].name);
+  });
+</script>
+
+<script>
+  var searchTitle = $('#huluPop').text();
+  var queryURL = "https://www.omdbapi.com/?t=" + searchTitle + "&y=&plot=short&apikey=trilogy";
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function (response) {
+    $('#huluPopImg').attr('src', response.Poster);
+    $('#huluPop').text(response.Title);
+  });
+</script>
+
+<script>
+  var searchTitle = $('#amazonPop').text();
+  var queryURL =
+    "https://api.themoviedb.org/3/search/multi?api_key=ffb937069845c6fafb524eb3edfed81c&language=en-US&query=" +
+    searchTitle + "&page=1&include_adult=false";
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function (response) {
+    let backdropSrc = JSON.stringify('https://image.tmdb.org/t/p/w370_and_h556_bestv2' +
+      response.results[0].backdrop_path);
+    $('#amazonPop').attr('src', backdropSrc);
+    $('#amazonPopImg').html(response.results[0].name);
+  });
+</script>
+
+<script>
+  var searchTitle = $('#amazonPop').text();
+  var queryURL = "https://www.omdbapi.com/?t=" + searchTitle + "&y=&plot=short&apikey=trilogy";
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function (response) {
+    $('#amazonPopImg').attr('src', response.Poster);
+    $('#amazonPop').text(response.Title);
+  });
+</script>
