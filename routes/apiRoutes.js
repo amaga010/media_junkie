@@ -1,16 +1,48 @@
+// ERROR: when the latter answers are submitted (5, 5, with others, internet, cine, journey) the movieRec comes back undefined
+
 var connection = require("../config/connection");
-var movieInfo = require('movie-info')
+const movieInfo = require('movie-info');
 
 module.exports = function (app) {
   app.get("/", function (req, res) {
     res.render("index");
   });
 
-  // app.get('/results', function (req, res) {
-  //     app.render("results");
-  //    });
+  app.post("/results/", function (req, res) {
+    let results = [];
+    connection.query("select netflix, COUNT(netflix) AS MOST_FREQUENT from surveyData GROUP BY netflix ORDER BY COUNT(netflix) DESC LIMIT 2", function (err, data) {
+      let netflixPop = null;
+      for (i = 0; i < data.length; i++) {
+        if (data[i].netflix != '0') {
+          netflixPop = data[i].netflix;
+        } else {
+        }
+      }
+      results.push(netflixPop);
+    });
 
-  app.post("/results", function (req, res) {
+    connection.query("select hulu, COUNT(hulu) AS MOST_FREQUENT from surveyData GROUP BY hulu ORDER BY COUNT(hulu) DESC LIMIT 2", function (err, data) {
+      let huluPop = null;
+      for (i = 0; i < data.length; i++) {
+        if (data[i].hulu != '0') {
+          huluPop = data[i].hulu;
+        } else {
+        }
+      }
+      results.push(huluPop);
+    });
+
+    connection.query("select prime, COUNT(prime) AS MOST_FREQUENT from surveyData GROUP BY prime ORDER BY COUNT(prime) DESC LIMIT 2", function (err, data) {
+      let primePop = null;
+      for (i = 0; i < data.length; i++) {
+        if (data[i].prime != '0') {
+          primePop = data[i].prime;
+        } else {
+        }
+      }
+      results.push(primePop);
+    });
+
     connection.query("SELECT * FROM surveyData", function (err, data) {
 
 
@@ -59,9 +91,6 @@ module.exports = function (app) {
       var incomingUserScale = req.body.scaleScores
       var scaleScoresArray = [];
       var bestScaleMatches = []; //this is what will be pushed to next criteria
-
-      console.log("Logging req.body....");
-      console.log(req.body.scaleScores);
 
       // iterates through users, then iterates through them again to gather their scores 
       for (var i = 0; i < sqlScaleData.length; i++) {
@@ -134,7 +163,6 @@ module.exports = function (app) {
         }
         booleanScoresArray.push({ id: sqlBooleanData[i].id, score: matchScore })
       }
-      console.log(incomingUserBoolean)
       // compare with users and find best matches
       for (var i = 0; i < booleanScoresArray.length; i++) {
         if (booleanScoresArray[i].score >= 3) {
@@ -172,7 +200,6 @@ module.exports = function (app) {
           sqlWrittenData.push(newDataObject)
         }
       }
-
       // creates an object of an array for the matches
       var recObject = {}
       for (i = 0; i < writtenObject.length; i++) {
@@ -189,36 +216,29 @@ module.exports = function (app) {
             movieRec.push(writtenObject[i].amazonScore)
           }
         }
+      };
+      let topPick = null;
+      for (i = 0; i < 3; i++) {
+        if (movieRec[i] != '0') {
+          topPick = movieRec[i];
+        } else {
+        }
       }
-      console.log(movieRec[0]);
-      movieInfo(movieRec[0], function (error, response) {
-        console.log(response);
-      });
-
-      // gets most popular netflix recommendation
-      connection.query("select netflix, COUNT(netflix) AS MOST_FREQUENT from surveyData GROUP BY netflix ORDER BY COUNT(netflix) DESC", function (err, data) {
-        netflixPop = data[1].netflix;
-        console.log(netflixPop);
-        movieInfo(netflixPop, function (error, response) {
-          console.log('netflixPop' + response)
-        })
-      });
-      // gets most popular hulu recommendation
-      connection.query("select hulu, COUNT(hulu) AS MOST_FREQUENT from surveyData GROUP BY hulu ORDER BY COUNT(hulu) DESC", function (err, data) {
-        let huluPop = data[1].hulu;
-        console.log(huluPop);
-        movieInfo(huluPop, function (error, response) {
-          console.log('huluPop' + response)
-        })
-      });
-      // gets most common amazon recommendation
-      connection.query("select prime, COUNT(prime) AS MOST_FREQUENT from surveyData GROUP BY prime ORDER BY COUNT(prime) DESC", function (err, data) {
-        let primePop = data[1].prime;
-        console.log(primePop);
-        movieInfo(primePop, function (error, response) {
-          console.log('amazonPop' + response)
-        })
+      results.push(topPick);
+      console.log(results);
+      res.render("results", {
+        results
       });
     });
-  })
-}
+  });
+
+  // first criteria:
+  // eliminates users who dont have close enough matches based on a scale score (questions 2/3)
+  // and pushes the matches to be moved on to the second criteria
+
+  //function findMatches() {
+
+  //}
+};
+//findMatches()
+

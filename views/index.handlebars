@@ -10,61 +10,61 @@
   </div>
 
   <div id="column2">
-    <form id="form1">
+    <form method="POST" action="/results">
 
       <div class="form-group">
         <label for="radios-0">
-          <input type="radio" name="genre" class="genre" value="1">
+          <input type="radio" name="scaleScores[]genre" class="genre" value="1">
           1
         </label>
         <label for="radios-1">
-          <input type="radio" name="genre" class="genre" value="2">
+          <input type="radio" name="scaleScores[]genre" class="genre" value="2">
           2
         </label>
         <label for="radios-2">
-          <input type="radio" name="genre" class="genre" value="3">
+          <input type="radio" name="scaleScores[]genre" class="genre" value="3">
           3
         </label>
         <label for="radios-3">
-          <input type="radio" name="genre" class="genre" value="4">
+          <input type="radio" name="scaleScores[]genre" class="genre" value="4">
           4
         </label>
         <label for="radios-4">
-          <input type="radio" name="genre" class="genre" value="5">
+          <input type="radio" name="scaleScores[]genre" class="genre" value="5">
           5
         </label>
       </div>
 
       <div class="form-group">
         <label for="radios-0">
-          <input type="radio" name="director" class="director" value="1">
+          <input type="radio" name="scaleScores[]director" class="director" value="1">
           1
         </label>
         <label for="radios-1">
-          <input type="radio" name="director" class="director" value="2">
+          <input type="radio" name="scaleScores[]director" class="director" value="2">
           2
         </label>
         <label for="radios-2">
-          <input type="radio" name="director" class="director" value="3">
+          <input type="radio" name="scaleScores[]director" class="director" value="3">
           3
         </label>
         <label for="radios-3">
-          <input type="radio" name="director" class="director" value="4">
+          <input type="radio" name="scaleScores[]director" class="director" value="4">
           4
         </label>
         <label for="radios-4">
-          <input type="radio" name="director" class="director" value="5">
+          <input type="radio" name="scaleScores[]director" class="director" value="5">
           5
         </label>
       </div>
 
       <div class="form-group">
         <div class="radio">
-          <input type="radio" name="alone" id="radio-alone-0" value="0">
+          <input type="radio" name="booleanScores[]alone" id="radio-alone-0" value="0">
           Alone
         </div>
         <div class="radio">
-          <input type="radio" name="alone" id="radio-alone-1" value="1">
+          <input type="radio" name="booleanScores[]alone" id="radio-alone-1" value="1">
           With others
           </label>
         </div>
@@ -72,11 +72,11 @@
 
       <div class="form-group">
         <div class="radio">
-          <input type="radio" name="discover" id="radio-discover-0" value="0">
+          <input type="radio" name="booleanScores[]discover" id="radio-discover-0" value="0">
           Word of Mouth
         </div>
         <div class="radio">
-          <input type="radio" name="discover" id="radio-discover-1" value="1">
+          <input type="radio" name="booleanScores[]discover" id="radio-discover-1" value="1">
           Internet / Trailers
           </label>
         </div>
@@ -84,11 +84,11 @@
 
       <div class="form-group">
         <div class="radio">
-          <input type="radio" name="visual" id="radio-visual-0" value="0">
+          <input type="radio" name="booleanScores[]visual" id="radio-visual-0" value="0">
           Special Effects
         </div>
         <div class="radio">
-          <input type="radio" name="visual" id="radio-visual-1" value="1">
+          <input type="radio" name="booleanScores[]visual" id="radio-visual-1" value="1">
           Cinematography
           </label>
         </div>
@@ -96,30 +96,34 @@
 
       <div class="form-group">
         <div class="radio">
-          <input type="radio" name="plot" id="radio-journey-0" value="0">
+          <input type="radio" name="booleanScores[]plot" id="radio-journey-0" value="0">
           The Destination
         </div>
         <div class="radio">
-          <input type="radio" name="plot" id="radio-journey-1" value="1">
+          <input type="radio" name="booleanScores[]plot" id="radio-journey-1" value="1">
           The Journey
           </label>
         </div>
       </div>
       <div class="form-group">
         <div class="focused" id="searchResults1"></div>
-        <input id="amazonRec" class="recomendation" type="text" placeholder="Recoment a show on Amazon">
+        <input id="amazonRec" name="writtenScores[]amazon" class="recomendation" type="text"
+          placeholder="Recoment a show on Amazon">
         <input class="checkbox" type="checkbox" name="netflix" value="0"> I don't know / I don't use Amazon<br>
         <div class="focused" id="searchResults2"></div>
-        <input id="huluRec" class="recomendation" type="text" placeholder="Recoment a show on Hulu" required="false">
+        <input id="huluRec" name="writtenScores[]hulu" class="recomendation" type="text"
+          placeholder="Recoment a show on Hulu" required="false">
         <input class="checkbox" type="checkbox" name="hulu" value="0"> I don't know / I don't use Hulu<br>
         <div class="focused" id="searchResults3"></div>
-        <input id="netflixRec" class="recomendation" type="text" placeholder="Recoment a show on Netflix"
-          required="false">
+        <input id="netflixRec" name="writtenScores[]netflix" class="recomendation" type="text"
+          placeholder="Recoment a show on Netflix" required="false">
         <input class="checkbox" type="checkbox" name="amazon" value="0"> I don't know / I don't use Netflix<br>
-        <input id="age" class="recomendation" type="text" placeholder="Your age" required="false">
-        {{!-- <button id="submit" onclick="window.location.href='/results'" type="submit" value="submit">Submit</button> --}}
-                <div id="submit">Submit</div>
+        <input id="age" name="age" class="recomendation" type="text" placeholder="Your age" required="false">
+
+        {{!-- onclick="window.location.href='/results'" --}}
+        {{!-- <div id="submit">Submit</div> --}}
       </div>
+      <button id="submit" value="submit">Submit</button>
     </form>
   </div>
 </div>
@@ -128,40 +132,42 @@
 </div>
 
 <script src="./js/autocomplete.js"></script>
-<script>
-  document.getElementById("submit").addEventListener('click', function(event) {
+{{!-- <script>
+  document.getElementById("submit").addEventListener('click', function (event) {
     event.preventDefault();
     console.log("click");
     let userScore = collectData();
-      console.log(userScore)
-      $.post("/results", userScore, function(data){
-        console.log(data)
-      })
-    });
-    function collectData() {
-      var userScore = {
-        scaleScores: [
-          $("input[name='genre']:checked").val(),
-          $("input[name='director']:checked").val(),
-        ],
-        booleanScores: [
-          $("input[name='alone']:checked").val(),
-          $("input[name='discover']:checked").val(),
-          $("input[name='visual']:checked").val(),
-          $("input[name='plot']:checked").val(),
-        ],
-        writtenScores: [
-          $('#netflixRec').val(),
-          $('#huluRec').val(),
-          $('#amazonRec').val()
-        ]
-      }
-      return userScore;
+    $.post("/results", userScore, function (data) {
+      console.log(data)
+    })
+  });
+  function collectData() {
+    var userScore = {
+      scaleScores: [
+        $("input[name='genre']:checked").val(),
+        $("input[name='director']:checked").val(),
+      ],
+      booleanScores: [
+        $("input[name='alone']:checked").val(),
+        $("input[name='discover']:checked").val(),
+        $("input[name='visual']:checked").val(),
+        $("input[name='plot']:checked").val(),
+      ],
+      writtenScores: [
+        $('#netflixRec').val(),
+        $('#huluRec').val(),
+        $('#amazonRec').val()
+      ]
+    }
+    return userScore;
   }
-</script>
+</script> --}}
+
+
+
 {{!-- <script type="text/javascript">
-  $(document).ready(function(event) {
-    $("#submit").on("click", function(event) {
+  $(document).ready(function (event) {
+    $("#submit").on("click", function (event) {
       event.preventDefault();
       console.log("button clicked")
       let userScore = collectData();
@@ -186,6 +192,5 @@
         ]
       }
       return userScore;
-  });
+    });
 </script> --}}
-
